@@ -9,6 +9,4 @@ COPY . /app
 # Install the application dependencies.
 WORKDIR /app
 RUN uv sync --frozen --no-cache
-
-# Run the application.
-CMD ["fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0"]
+RUN uv run app/main.py
