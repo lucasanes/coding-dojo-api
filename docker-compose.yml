@@ -21,8 +21,11 @@ services:
     ports:
       - "8000:80"
     volumes:
-      - .:/app
+      - ./app:/app/app
+      #- .:/app
+
     command: ["/app/.venv/bin/fastapi", "run", "app/main.py", "--port", "80", "--host", "0.0.0.0"]
 
 volumes:
   postgres_data:
+  #venv_data:

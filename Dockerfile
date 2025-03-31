@@ -9,4 +9,3 @@ COPY . /app
 # Install the application dependencies.
 WORKDIR /app
 RUN uv sync --frozen --no-cache
-RUN uv run app/main.py
