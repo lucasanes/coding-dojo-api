@@ -1,4 +1,5 @@
-# Fast API Kickstart
+### Coding Dojo API
+
 Nesse repositório estou incluindo o mínimo necessário para o desenvolvimento de uma aplicação REST API usando:
 - Python
 - UV como gerenciamento de dependências
@@ -17,7 +18,7 @@ Nesse repositório estou incluindo o mínimo necessário para o desenvolvimento 
 1. Baixe o repositório para o seu computador
 2. No terminal, acesse o diretório criado
 ```bash
-cd fastapi_kickstart
+cd coding-dojo-api
 ```
 3. Crie um arquivo **.env**
 ```bash
