@@ -25,7 +25,7 @@ def process_array(array_example: List[int] = Body(...)):
     response = requests.post(FLASK_BACKEND_URL, json={"array": array_example})
     if response.status_code == 200:
       sorted_array = response.json().get("sorted_array")
-      return {sorted_array}
+      return {"sortedArray": sorted_array}
     else:
       return {
         "error": "Erro no backend Flask",
