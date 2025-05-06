@@ -1,39 +1,39 @@
-from typing import Union
-import json
+from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
-
-from fastapi import FastAPI
+import json
+import requests
 
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],       # Permite todas as origens
-    allow_credentials=False,   # Tem que ser False com "*"
-    allow_methods=["*"],       # Todos os métodos permitidos
-    allow_headers=["*"],       # Todos os headers permitidos
+    allow_origins=["*"],
+    allow_credentials=False,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
-
-@app.get("/")
-def read_root():
-    return {"Hello": "World"}
-
-
-@app.get("/items/{item_id}")
-def read_item(item_id: int, q: Union[str, None] = None):
-    return {"item_id": item_id, "q": q}
+FLASK_BACKEND_URL = "https://coding-dojo-backend.lucasanes.com/heapsort"
 
 @app.post("/heapsort")
-def validate_list(array_example):
-    numbers_list = json.loads(array_example)
-    for i in enumerate(numbers_list):
-        if not isinstance(numbers_list[i], int):
-            return {"Lista tá errada paizao"}
+def process_array(array_example: str = Body(...)):
+    try:
+        # Converte string JSON em lista Python
+        numbers_list = json.loads(array_example)
+    except json.JSONDecodeError:
+        return {"error": "JSON inválido"}
 
-def list_to_backend(numbers_list):
-    if validate_list(array_example='[1, 2, 3, 4, 5]'):
-        return numbers_list
-    
-def backend_to_frontend(sorted_array):
-    return json.dump(sorted_array)
+    # Validação: deve ser lista de inteiros
+    if not isinstance(numbers_list, list) or not all(isinstance(i, int) for i in numbers_list):
+        return {"error": "A lista deve conter apenas números inteiros"}
+
+    # Envia para o backend Flask
+    try:
+        response = requests.post(FLASK_BACKEND_URL, json={"array": numbers_list})
+        if response.status_code == 200:
+            sorted_array = response.json().get("sorted_array")
+            return sorted_array  # <-- Aqui retornamos diretamente como array JSON
+        else:
+            return {"error": "Erro no backend Flask", "status": response.status_code}
+    except Exception as e:
+        return {"error": "Falha na conexão com o backend", "details": str(e)}
