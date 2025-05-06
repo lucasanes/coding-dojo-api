@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Body
 from fastapi.middleware.cors import CORSMiddleware
 import json
@@ -16,7 +17,7 @@ app.add_middleware(
 FLASK_BACKEND_URL = "https://coding-dojo-backend.lucasanes.com/heapsort"
 
 @app.post("/heapsort")
-def process_array(array_example: str = Body(...)):
+def process_array(array_example: List[int] = Body(...)):
     try:
         # Converte string JSON em lista Python
         numbers_list = json.loads(array_example)
